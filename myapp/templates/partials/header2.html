@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    header {
+      background: linear-gradient(to right, #fd781f, #ff8a3bdc);
+      box-shadow: inset 0px 0px 5px 2px rgba(133, 109, 97, 0.493);
+      color: #000;
+      position: relative;
+    }
+
+    .navbar-nav.ml-auto .nav-item {
+      margin-left: 30px;
+    }
+
+    .navbar-nav.ml-auto .nav-link {
+        font-size: 16px;
+      }
+
+  .navbar-nav .logout-btn {
+      background-color:#50555a;
+      border-radius: 50px;
+      padding: 5px 15px;
+      color: #fad5b3 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <title>Admin Dashboard</title>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <b><a class="nav-link" href="#" style="font-family: 'Poppins', sans-serif; color: black;">HealthAxis</a></b>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link underline" href="{% url 'udashboard' %}"><b>Dashboard</b></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link logout-btn" href="javascript:void(0);" onclick="confirmLogout()"><b>Logout</b></a>
+          </li>
+
+          {% if messages %}
+          <div class="alert alert-info">
+              <ul>
+                  {% for message in messages %}
+                      <li>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+      {% endif %}
+
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <script>
+    function confirmLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = "{% url 'logout' %}";
+        }
+    }
+  </script>
+
+  </body>
+  </html>

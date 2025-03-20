@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+
+body {
+    font-family: 'League Spartan', sans-serif;
+      background-color: #fcfcfc;
+      background-image: linear-gradient(rgb(241, 241, 241), rgb(247, 246, 246));
+    }
+
+
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: linear-gradient(to right, #f1ca97, #f7e6d1);
+      color: #000000;
+    }
+
+    header {
+      background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #000000;
+    }
+
+    footer {
+      background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #fff;
+    }
+
+    .navbar-nav .nav-link {
+      margin-right: 20px;
+      font-weight: bold;
+      color: #080808 !important;
+    }
+    .navbar-nav .signup-btn {
+      background-color: #77a7ff;
+      border-radius: 50px;
+      padding: 5px 15px;
+      color: #000 !important;
+    }
+
+    .signup-btn:hover {
+      background-color: #ff8c00; 
+    }
+
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      
+    }
+
+    .section-01 {
+      background-color: #ffede0;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      position: relative;
+    }
+
+    .section-02 {
+      background-color: #ffe9d1;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      display: none;
+    }
+
+    .section-03 {
+      background-color: #ffede0;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      display: none;
+    }
+
+    .section-04 {
+      background-color: #ffe9d1;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      display: none;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto; 
+    }
+
+    .section-01 img {
+        position: absolute;
+    top: 50%;
+    left: calc(100% / 12 * 8.5);
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 60%; 
+      
+    }
+
+    .text-box {
+  width: 30%;
+  max-width: 400px; 
+  margin-left: calc((100% / 12) * 7);
+  background-color: transparent;
+  padding: 20px;
+  margin-top: 1%;
+  box-sizing: border-box; 
+}
+  
+.text-box-section-01 {
+  width: 30%;
+  max-width: 400px; 
+  margin-left: calc((100% / 12) * 1);
+  background-color: transparent;
+  padding: 20px;
+  margin-top: 0%;
+  box-sizing: border-box; 
+}
+
+.btn-primary {
+  background:#e0762f ; 
+  border-color: rgba(221, 117, 14, 0.493); 
+}
+
+.text-box-section-03 {
+  width: 30%;
+  max-width: 400px; 
+  margin-left: calc((100% / 12) * 1);
+  background-color: transparent;
+  padding: 20px;
+  margin-top: 1%;
+  box-sizing: border-box; 
+}
+
+.section-02 img {
+
+    position: absolute;
+    top: 152%;
+    left: calc(100% / 12 * 3);
+    transform: translate(-50%, -50%);
+    max-width: 100%;  
+  max-height: 60%; 
+}
+
+
+.section-03 img {
+
+position: absolute;
+top: 252%;
+left: calc(100% / 12 * 8.5);
+transform: translate(-50%, -50%);
+max-width: 100%;  
+max-height: 60%; 
+}
+
+.section-04 img {
+
+position: absolute;
+top: 358%;
+left: calc(100% / 12 * 3.5);
+transform: translate(-50%, -50%);
+max-width: 100%;  
+max-height: 60%; 
+}
+
+.text-box-section-04 {
+  width: 30%;
+  max-width: 400px; 
+  margin-left: calc((100% / 12) * 7); /* Move to the right */
+  background-color: transparent;
+  padding: 20px;
+  margin-top: 1%;
+  box-sizing: border-box; 
+}
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <title>Home</title>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <b><a class="nav-link" href="#" style="font-family: 'Poppins', sans-serif; color: black;">HealthAxis</a></b>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#section-02">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#section-03">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#section-04">Item Avalability</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link signup-btn" href="{% url 'signup' %}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="content">
+      <div class="section section-01">
+        <img src="{% static 'Images/Image04.png' %}" alt="Image" />
+        <br><br><br><br><br><br>
+        <br><br><br>
+        <div class="text-box-section-01"> 
+          <h1>Redefining the role of Wholesale Distribution</h1>
+          <br>
+          <p>Welcome to HealthAxis, the ultimate online pharmaceutical wholesale platform. Our web application is designed to redefine the role of wholesale by providing a convenient and seamless ordering experience for our valued customers. With HealthAxis, you can easily place your wholesale orders online, all from the comfort of your own home or office. Sign in now and unlock a world of hassle-free wholesale shopping.</p>
+        
+          <a class="btn btn-primary rounded-pill mt-3" href="{% url 'login' %}"><strong>Login ➙</strong></a>
+
+        </div>
+      </div>
+      <div class="section section-02" id="section-02"> 
+        <img src="{% static 'Images/Image06.png' %}" alt="Image" />
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <main>
+                
+                <div class="text-box">
+                  
+                    <h1>About HYS Enterprises:</h1>
+                    <p>HYS Pharmacy is a leading provider of wholesale pharmaceutical items, catering to the needs of healthcare professionals and businesses in the medical industry. With a commitment to exceptional quality and outstanding customer service, HYS Pharmacy has established itself as a trusted supplier within the pharmaceutical community.
+                    </p>
+                    <p>At HYS Pharmacy, we understand the importance of efficiency and convenience in the fast-paced healthcare sector. To streamline the ordering process for our valued customers, we have developed an innovative web application called HealthAxis. This user-friendly platform is designed to make placing orders a seamless experience.</p>
+                  </div>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section section-03" id="section-03"> 
+        <img src="{% static 'Images/Image07.png' %}" alt="Image" />
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <main>
+                <br><br>
+                <div class="text-box-section-03">
+                  
+                  <h1>Services</h1>
+                  <p>
+                    Our dedicated team ensures fast and efficient delivery of essential medications and healthcare products to customer pharmacies. With a commitment to customer satisfaction, we offer a convenient "pay after delivery" option, allowing pharmacies to prioritize the immediate needs of their patients. Count on HealthAxis for reliable and timely pharmaceutical item delivery, ensuring the well-being of communities we serve.</p>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section section-04" id="section-04"> 
+        <img src="{% static 'Images/Image08.png' %}" alt="Image" />
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <main>
+                <div class="text-box-section-04"> 
+                  <h1>Check Available Items</h1>
+                  <br>
+                  <p>Need to check item availability? Our system provides up-to-date stock information to ensure a smooth and efficient experience for your wholesale pharmaceutical needs.</p>
+                  <a class="btn btn-primary rounded-pill mt-3" href="{% url 'check_availability' %}"><strong>Check Availability ➙</strong></a>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-transparent">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <br>
+            <p>&copy; 2025 HealthAxis. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+    window.addEventListener('scroll', function() {
+      var header = document.querySelector('header');
+      var section2 = document.querySelector('.section-02');
+      var section3 = document.querySelector('.section-03');
+      var section4 = document.querySelector('.section-04');
+      var position2 = section2.getBoundingClientRect();
+      var position3 = section3.getBoundingClientRect();
+      var position4 = section4.getBoundingClientRect();
+
+     
+      if (position2.top >= 0 && position2.bottom <= window.innerHeight) {
+        section2.style.display = 'block';
+        header.style.display = 'block'; 
+      }
+
+   
+      if (position3.top >= 0 && position3.bottom <= window.innerHeight) {
+        section3.style.display = 'block';
+        header.style.display = 'block'; 
+      }
+
+      
+      if (position4.top >= 0 && position4.bottom <= window.innerHeight) {
+        section4.style.display = 'block';
+        header.style.display = 'block'; 
+      }
+    });
+  </script>
+</body>
+
+</html>

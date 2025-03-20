@@ -1,0 +1,341 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+  <link rel="stylesheet" href="{% static 'css/userStyle.css' %}">
+  <style> 
+    .scrollable-pane {
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      padding-right: 0 !important;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .content-section h4 {
+    color: #faefe6; 
+  }
+
+    .order-form {
+      margin-top: 4rem;
+      max-width: 820px; 
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      background-image: linear-gradient(rgb(255, 250, 246), rgb(255, 252, 249))
+    }
+
+    .submit-button {
+      background-color: #ffa264;
+      color: rgb(0, 0, 0);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 18px; 
+    }
+
+    .cart-item-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .cart-item-card span {
+      margin-right: 20px;
+    }
+
+    .cart-item-delete {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-left: auto; 
+    }
+
+    .order-card {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-items {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .order-items.expanded {
+      display: block;
+    }
+
+    .full-page-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .view-order-btn {
+    background-color: #53585e;
+    color: rgb(243, 214, 159);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-order-btn:hover {
+    background-color: #fa9511;
+    color: rgb(19, 12, 4);
+}
+
+.order-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    background-color: #faf3e9f1;
+}
+
+.order-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #e7e7e7f3;
+}
+
+.pending-orders-heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #ffd3ad;
+}
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <title>User Dashboard</title>
+</head>
+
+<body>
+  
+  {% include 'partials/header2.html' %}
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 sidebar">
+        <aside>
+          <div class="card profile-card">
+            <div class="card-body">
+              <div class="profile-info">
+                <img src="{% static 'Images/user.png' %}" alt="Valinor Logo" class="profile-image">
+                <div class="profile-text">
+                  <h5 class="card-title"><b>{{ username }}</b></h5>
+                  <h6 class="card-text pharmacy-name"><b>{{ upharmacy_name }}</b></h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="list-group">
+            <a href="{% url 'udashboard' %}" class="list-group-item"><b>Place Orders</b></a>
+            <a href="{% url 'user_pendingorders' %}" class="list-group-item"><b>Pending Orders</b></a>
+            <a href="{% url 'user_processedorders' %}" class="list-group-item"><b>Processed Orders</b></a>
+            <a href="{% url 'user_shippedorders' %}" class="list-group-item"><b>Shipped Orders</b></a>
+            <a href="#delivered-orders-pane" class="list-group-item"><b>Delivered Orders</b></a>
+            <a href="{% url 'user_cancelledorders' %}" class="list-group-item"><b>Cancelled Orders</b></a>
+          </div>
+        </aside>
+      </div>
+      <div class="col-md-10 scrollable-pane">
+        <main>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div id="place-order-pane" class="content-section active">
+                  <br>
+                  <h4><b>Place Order</b></h4>
+                </div>
+                <div id="pending-orders-pane" class="content-section">
+                  <h2>Pending Orders</h2>
+                  <br>
+                  <div class="order-cards-container pending-orders"></div>
+                </div>
+                <div id="processed-orders-pane" class="content-section">
+                  <h2>Processed Orders</h2>
+                  <br>
+                  <div class="order-cards-container processed-orders"></div>
+                </div>
+                <div id="shipped-orders-pane" class="content-section">
+                    <br>
+                  <h4>Shipped Orders</h4>
+                  <br>
+                  <div class="order-cards-container shipped-orders"></div>
+                </div>
+                <div id="delivered-orders-pane" class="content-section">
+                  <img class="full-page-image" src="{% static 'Images/Image16.png' %}" alt="Background Image" width="1920" height="1080">
+                  <br>
+                  <h4>Delivered Orders</h4>
+                  <br>
+                  <div class="order-cards-container delivered-orders">
+                      {% for order in delivered_orders %}
+                      <div class="order-card">
+                          <h5>Order {{ order.orderid }}</h5>
+                          <p>Order Date: {{ order.order_date|date:"M. d, Y" }}</p>
+                          <p>Username: {{ order.username }}</p>
+                          <p>Status: {{ order.status }} Total: {{ order.total }}</p>
+                          <p>Pharmacy Name: {{ customer.upharmacy_name }}</p>
+                          <p>Address: {{ customer.uaddress }}</p>
+                          <button class="view-order-btn">View Order</button>
+                          <div class="order-items" style="display: none;"> 
+                              <h6>Order Items</h6>
+                              <ul>
+                                  {% for item in order.order_items.all %}
+                                  <li>
+                                      {{ item.item_name }} (Qty: {{ item.quantity }}) -
+                                      Price: {{ item.price }} - Total: {{ item.total }}
+                                  </li>
+                                  {% endfor %}
+                              </ul>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+              </div>
+                <div id="cancelled-orders-pane" class="content-section">
+                  <h2>Cancelled Orders</h2>
+                  <br>
+                  <div class="order-cards-container cancelled-orders"></div>
+                </div>
+                <div id="order-history-pane" class="content-section">
+                  <h2>Order History</h2>
+                  <br>
+                  <div class="order-cards-container order-history"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-transparent">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <p>&copy; 2025 HealthAxis. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var links = document.querySelectorAll(".list-group-item");
+      var contentSections = document.querySelectorAll(".content-section");
+  
+
+      var udeliveredOrderIndex = Array.from(links).findIndex(link => link.getAttribute("href") === "#delivered-orders-pane");
+  
+      if (udeliveredOrderIndex !== -1) {
+        contentSections.forEach(function (section, index) {
+          if (index === udeliveredOrderIndex) {
+            section.classList.add("active");
+          } else {
+            section.classList.remove("active");
+          }
+        });
+  
+        links.forEach(function (link, index) {
+          if (index === udeliveredOrderIndex) {
+            link.classList.add("active");
+            link.classList.add("colored");
+          } else {
+            link.classList.remove("active");
+            link.classList.remove("colored");
+          }
+        });
+      }
+  
+      links.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          if (this.getAttribute("href").startsWith("#")) {
+            e.preventDefault();
+            var target = this.getAttribute("href");
+            var targetSection = document.querySelector(target);
+  
+            if (targetSection) {
+              contentSections.forEach(function (section) {
+                if (section !== targetSection) {
+                  section.classList.remove("active");
+                }
+              });
+  
+              links.forEach(function (link) {
+                link.classList.remove("active");
+                link.classList.remove("colored");
+              });
+  
+              targetSection.classList.add("active");
+              this.classList.add("active");
+  
+              if (target === "#delivered-orders-pane") {
+                this.classList.add("colored");
+              }
+            }
+          }
+        });
+      });
+    });
+  </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const viewOrderButtons = document.querySelectorAll('.view-order-btn');
+      viewOrderButtons.forEach(button => {
+          button.addEventListener('click', () => {
+              const orderItems = button.nextElementSibling;
+              orderItems.style.display = orderItems.style.display === 'none' ? 'block' : 'none';
+          });
+      });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+
+body {
+    font-family: 'League Spartan', sans-serif;
+      background-color: #fcfcfc;
+      background-image: linear-gradient(rgb(241, 241, 241), rgb(247, 246, 246));
+    }
+
+
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: linear-gradient(to right, #f1ca97, #f7e6d1);
+      color: #000000;
+    }
+
+    header {
+      background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #000000;
+    }
+
+    footer {
+      background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #fff;
+    }
+
+    .navbar-nav .nav-link {
+      margin-right: 20px;
+      font-weight: bold;
+      color: #080808 !important;
+    }
+    .navbar-nav .signup-btn {
+      background-color: #77a7ff;
+      border-radius: 50px;
+      padding: 5px 15px;
+      color: #000 !important;
+    }
+
+    .signup-btn:hover {
+      background-color: #ff8c00; 
+    }
+
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      
+    }
+
+    .section-01 {
+      background-color: #ffede0;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      position: relative;
+    }
+
+    .section-02 {
+      background-color: #ffe9d1;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      display: none;
+    }
+
+    .section-03 {
+      background-color: #ffede0;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      display: none;
+    }
+
+    .section-04 {
+      background-color: #ffe9d1;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      display: none;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto; 
+    }
+
+    .section-01 img {
+        position: absolute;
+    top: 50%;
+    left: calc(100% / 12 * 8.5);
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 60%; 
+      
+    }
+
+    .text-box {
+  width: 30%;
+  max-width: 400px; 
+  margin-left: calc((100% / 12) * 7);
+  background-color: transparent;
+  padding: 20px;
+  margin-top: 1%;
+  box-sizing: border-box; 
+}
+  
+.text-box-section-01 {
+  width: 30%;
+  max-width: 400px; 
+  margin-left: calc((100% / 12) * 1);
+  background-color: transparent;
+  padding: 20px;
+  margin-top: 0%;
+  box-sizing: border-box; 
+}
+
+.btn-primary {
+  background:#e0762f ; 
+  border-color: rgba(221, 117, 14, 0.493); 
+}
+
+.text-box-section-03 {
+  width: 30%;
+  max-width: 400px; 
+  margin-left: calc((100% / 12) * 1);
+  background-color: transparent;
+  padding: 20px;
+  margin-top: 1%;
+  box-sizing: border-box; 
+}
+
+.section-02 img {
+
+    position: absolute;
+    top: 152%;
+    left: calc(100% / 12 * 3);
+    transform: translate(-50%, -50%);
+    max-width: 100%;  
+  max-height: 60%; 
+}
+
+
+.section-03 img {
+
+position: absolute;
+top: 252%;
+left: calc(100% / 12 * 8.5);
+transform: translate(-50%, -50%);
+max-width: 100%;  
+max-height: 60%; 
+}
+
+.section-04 img {
+
+position: absolute;
+top: 358%;
+left: calc(100% / 12 * 3.5);
+transform: translate(-50%, -50%);
+max-width: 100%;  
+max-height: 60%; 
+}
+
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <title>My Web Page</title>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <b><a class="nav-link" href="#" style="font-family: 'Poppins', sans-serif; color: black;">HealthAxis</a></b>
+        style="height: 32px;"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link underline" href="{% url 'index' %}"><b>Home</b></a>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link signup-btn" href="{% url 'login' %}">Sign In</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="content">
+      <div class="section section-01">
+        <img src="{% static 'Images/Image04.png' %}" alt="Image" />
+        <br><br><br><br><br><br>
+        <br><br><br>
+        <div class="text-box-section-01"> 
+          <h1>Thank you for registering with us!!</h1>
+          <br>
+          <p>Welcome to Valinor, your registration request will be reviewed and accepted by us within two days.Account detils will be send to you via Email.Stay Tuned!! </p>
+        
+          <a class="btn btn-primary rounded-pill mt-3" href="{% url 'index' %}"><strong>Bach to Home page ➙</strong></a>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-transparent">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <br>
+            <p>&copy; 2025 HealthAxis. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

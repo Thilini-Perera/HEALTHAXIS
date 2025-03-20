@@ -1,0 +1,510 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+  <link rel="stylesheet" href="{% static 'css/userStyle.css' %}">
+  <style>
+
+  .scrollable-pane {
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    padding-right: 0 !important;
+  }
+
+  .content-section {
+    display: none;
+  }
+
+  .content-section.active {
+    display: block;
+  }
+
+  .content-section h4 {
+  color: #faefe6; 
+}
+
+  .order-form {
+    margin-top: 4rem;
+    max-width: 820px; 
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    background-image: linear-gradient(rgb(255, 250, 246), rgb(255, 252, 249))
+  }
+
+  .submit-button {
+    background-color: #ffa264;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px; 
+  }
+
+  .cart-item-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .cart-item-card span {
+    margin-right: 20px;
+  }
+
+  .cart-item-delete {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: auto; 
+  }
+
+  .order-card {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .order-items {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .order-items.expanded {
+    display: block;
+  }
+
+  .full-page-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+.order-form {
+margin-top: 2rem; 
+max-width: 820px; 
+padding: 15px; 
+background-color: #fff;
+border-radius: 5px;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+background-image: linear-gradient(rgb(255, 250, 246), rgb(255, 252, 249))
+}
+
+.order-button {
+position: absolute;
+bottom: 10px;
+right: 20px;
+background-color: #ffa264;
+color: rgb(0, 0, 0);
+border: none;
+padding: 10px 20px;
+border-radius: 3px;
+cursor: pointer;
+font-size: 18px;
+display: none;
+}
+
+.cart-items-container {
+position: relative;
+background: linear-gradient(to bottom, rgb(255, 250, 246), rgb(255, 252, 249));
+padding: 20px;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+margin-bottom: 20px;
+}
+
+.table {
+background-color: transparent;
+}
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <title>User Dashboard</title>
+</head>
+<body>
+
+  {% include 'partials/header2.html' %}
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 sidebar">
+        <aside>
+          <div class="card profile-card">
+            <div class="card-body">
+              <div class="profile-info">
+                <img src="{% static 'Images/user.png' %}" alt="Valinor Logo" class="profile-image">
+                <div class="profile-text">
+                  <h5 class="card-title"><b>{{ username }}</b></h5>
+                  <h6 class="card-text pharmacy-name"><b>{{ upharmacy_name }}</b></h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="list-group">
+            <a href="#place-order-pane" class="list-group-item"><b>Place Order</b></a>
+            <a href="{% url 'user_pendingorders' %}" class="list-group-item"><b>Pending Orders</b></a>
+            <a href="{% url 'user_processedorders' %}" class="list-group-item"><b>Processed Orders</b></a>
+            <a href="{% url 'user_shippedorders' %}" class="list-group-item"><b>Shipped Orders</b></a>
+            <a href="{% url 'user_deliveredorders' %}" class="list-group-item"><b>Delivered Orders</b></a>
+            <a href="{% url 'user_cancelledorders' %}" class="list-group-item"><b>Cancelled Orders</b></a>
+          </div>
+        </aside>
+      </div>
+      <div class="col-md-10 scrollable-pane">
+        <main>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div id="place-order-pane" class="content-section active">
+                  <img class="full-page-image" src="{% static 'Images/Image16.png' %}" alt="Background Image">
+                  <br>
+                  <h4><b>Place Order</b></h4>
+                  <div class="order-form">
+                    <form>
+                      <div class="form-group">
+                        <label for="item">Item:</label>
+                        <select class="form-control" id="item-select" onchange="updatePrice()">
+                          {% for item in items %}
+                            <option value="{{ item.item_id }}" data-price="{{ item.price }}">{{ item.item_name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input type="text" class="form-control" id="price" name="price" readonly>
+                      </div>
+                      <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="20" oninput="updateTotal()">
+                      </div>
+                      <div class="form-group">
+                        <label for="total">Total:</label>
+                        <input type="text" class="form-control" id="total" name="total" readonly>
+                      </div>
+                      <button type="button" class="submit-button" onclick="addToCart()"><b>Add to Cart</b></button>
+                    </form>
+                  </div>
+                  <br>
+                  <h4><b>My Cart</b></h4>
+                  <br>
+                  <div id="cart-items-container" class="cart-items-container">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Item</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          <th>Total</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="cart-items">
+                      </tbody>
+                    </table>
+                    <button class="order-button" onclick="placeOrder()">Order</button>
+                  </div>
+                </div>
+
+                </div>
+                <div id="pending-orders-pane" class="content-section">
+                  <h2>Pending Orders</h2>
+                  <br>
+                  <div class="order-cards-container pending-orders"></div>
+                </div>
+                <div id="processed-orders-pane" class="content-section">
+                  <h2>Processed Orders</h2>
+                  <br>
+                  <div class="order-cards-container processed-orders"></div>
+                </div>
+                <div id="delivered-orders-pane" class="content-section">
+                  <h2>Delivered Orders</h2>
+                  <br>
+                  <div class="order-cards-container delivered-orders"></div>
+                </div>
+                <div id="cancelled-orders-pane" class="content-section">
+                  <h2>Cancelled Orders</h2>
+                  <br>
+                  <div class="order-cards-container cancelled-orders"></div>
+                </div>
+                <div id="order-history-pane" class="content-section">
+                  <h2>Order History</h2>
+                  <br>
+                  <div class="order-cards-container order-history"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-transparent">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <p>&copy; 2025 HealthAxis. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  
+<script>
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+</script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var links = document.querySelectorAll(".list-group-item");
+      var contentSections = document.querySelectorAll(".content-section");
+  
+      var placeOrderIndex = Array.from(links).findIndex(link => link.getAttribute("href") === "#place-order-pane");
+  
+      if (placeOrderIndex !== -1) {
+        contentSections.forEach(function (section, index) {
+          if (index === placeOrderIndex) {
+            section.classList.add("active");
+          } else {
+            section.classList.remove("active");
+          }
+        });
+  
+        links.forEach(function (link, index) {
+          if (index === placeOrderIndex) {
+            link.classList.add("active");
+            link.classList.add("colored");
+          } else {
+            link.classList.remove("active");
+            link.classList.remove("colored");
+          }
+        });
+      }
+  
+      links.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          if (this.getAttribute("href").startsWith("#")) {
+            e.preventDefault();
+            var target = this.getAttribute("href");
+            var targetSection = document.querySelector(target);
+  
+            if (targetSection) {
+              contentSections.forEach(function (section) {
+                if (section !== targetSection) {
+                  section.classList.remove("active");
+                }
+              });
+  
+              links.forEach(function (link) {
+                link.classList.remove("active");
+                link.classList.remove("colored");
+              });
+  
+              targetSection.classList.add("active");
+              this.classList.add("active");
+  
+              if (target === "#place-order-pane") {
+                this.classList.add("colored");
+              }
+            }
+          }
+        });
+      });
+    });
+  </script>
+<script>
+
+function updatePrice() {
+    var selectedItem = document.getElementById("item-select");
+    var priceField = document.getElementById("price");
+    var selectedPrice = selectedItem.options[selectedItem.selectedIndex].getAttribute("data-price");
+    priceField.value = selectedPrice;
+    updateTotal();
+  }
+
+  function updateTotal() {
+    var price = parseFloat(document.getElementById("price").value);
+    var quantity = parseFloat(document.getElementById("quantity").value);
+    var totalField = document.getElementById("total");
+    var total = price * quantity;
+    totalField.value = isNaN(total) ? '' : total.toFixed(2);
+  }
+
+  function toggleOrderButtonVisibility() {
+  var orderButton = document.querySelector(".order-button");
+  var cartItems = document.getElementById("cart-items");
+  if (cartItems.children.length > 0) {
+    orderButton.style.display = "block";
+  } else {
+    orderButton.style.display = "none";
+  }
+}
+
+var orderID = null;
+
+async function createOrder(username, callback) {
+    try {
+        const csrftoken = getCookie('csrftoken');
+        const response = await fetch('/create_order/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ username: username }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            callback(data.order_id, username); 
+        } else {
+            console.error('Error creating order.');
+            callback(null, username); 
+        }
+    } catch (error) {
+        console.error('Error creating order:', error);
+        callback(null, username); 
+    }
+}
+
+
+function addToCart() {
+    var itemSelect = document.getElementById('item-select');
+    var selectedOption = itemSelect.options[itemSelect.selectedIndex];
+    var itemId = selectedOption.value;
+    var itemName = selectedOption.text;
+    var price = selectedOption.getAttribute('data-price');
+    var quantity = document.getElementById('quantity').value;
+
+    console.log('Item Name:', itemName);
+    console.log('Price:', price);
+    console.log('Quantity:', quantity);
+
+    var total = parseFloat(price) * parseInt(quantity);
+    console.log('Total:', total);
+
+    var cartItemsTable = document.getElementById('cart-items');
+
+    var newRow = cartItemsTable.insertRow();
+    var cell1 = newRow.insertCell(0);
+    var cell2 = newRow.insertCell(1);
+    var cell3 = newRow.insertCell(2);
+    var cell4 = newRow.insertCell(3);
+    var cell5 = newRow.insertCell(4);
+
+    cell1.innerHTML = itemName;
+    cell2.innerHTML = price;
+    cell3.innerHTML = quantity;
+    cell4.innerHTML = total.toFixed(2);
+    cell5.innerHTML = '<button class="btn btn-danger btn-sm" onclick="removeCartItem(this)">Remove</button>';
+
+    updateTotal();
+    toggleOrderButtonVisibility();
+}
+
+function removeCartItem(button) {
+    var row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+    updateTotal();
+}
+
+async function placeOrder(orderId, username) {
+  var cartItemsTable = document.getElementById('cart-items');
+    var rows = cartItemsTable.getElementsByTagName('tr');
+    var orderItems = [];
+
+    for (var i = 0; i < rows.length; i++) {
+        (function(index) { 
+            var cells = rows[index].getElementsByTagName('td');
+            var itemName = cells[0].innerText;
+            var price = parseFloat(cells[1].innerText);
+            var quantity = parseInt(cells[2].innerText);
+            var total = parseFloat(cells[3].innerText);
+
+            orderItems.push({ item_name: itemName, price: price, quantity: quantity, total: total });
+        })(i);
+    }
+
+    console.log(orderItems); 
+
+    if (orderId !== null) {
+        var csrftoken = getCookie('csrftoken');
+
+        fetch('/place_order/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ order_items: orderItems }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Order placed successfully.');
+                cartItemsTable.innerHTML = '';
+                toggleOrderButtonVisibility();
+                orderID = null; 
+            } else {
+                console.error('Error placing order.');
+            }
+        })
+        .catch(error => {
+            console.error('Error placing order:', error);
+        });
+    } else {
+        console.error('Error creating order.');
+    }
+}
+
+</script>
+  
+</body>
+</html>

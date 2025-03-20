@@ -1,0 +1,361 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/adminStyle.css' %}">
+  <style>
+    .scrollable-pane {
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      padding-right: 0 !important;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+    .order-form {
+      margin-top: 4rem;
+      max-width: 820px; 
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      background-image: linear-gradient(rgb(255, 250, 246), rgb(255, 252, 249))
+    }
+
+    .submit-button {
+      background-color: #ffa264;
+      color: rgb(0, 0, 0);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 18px; 
+    }
+
+    .cart-item-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .cart-item-card span {
+      margin-right: 20px;
+    }
+
+    .cart-item-delete {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-left: auto; 
+    }
+
+    .order-card {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-items {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .order-items.expanded {
+      display: block;
+    }
+
+    .full-page-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <title>Admin Dashboard</title>
+</head>
+
+<body>
+
+  {% include 'partials/headeradmin.html' %}
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 sidebar">
+        <aside>
+          <div class="card profile-card">
+            <div class="card-body">
+              <div class="profile-info">
+                <img src="{% static 'Images/user.png' %}" alt="Valinor Logo" class="profile-image">
+                <div class="profile-text">
+                  <h5 class="card-title"><b>Admin</b></h5>
+                  <h6 class="card-text pharmacy-name"><b>HYS Enterprices</b></h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="list-group">
+            <a href="{% url 'dashboard' %}" class="list-group-item">Pending Orders</a>
+            <a href="{% url 'processed_orders' %}" class="list-group-item">Processed Orders</a>
+            <a href="{% url 'Rship_orders' %}" class="list-group-item">Ready To Ship Orders</a>
+            <a href="{% url 'shipped_orders' %}" class="list-group-item">Shipped Orders</a>
+            <a href="#delivered-orders-pane" class="list-group-item">Delivered Orders</a>
+            <a href="#cancelled-orders-pane" class="list-group-item">Cancelled Orders</a>
+            <a href="#Stocks-pane" class="list-group-item">View Stocks</a>
+            <a href="{% url 'item_list' %}" class="list-group-item">Items</a>
+            <a href="{% url 'add_item' %}" class="list-group-item">Add Items</a>
+            <a href="{% url 'reg_request' %}" class="list-group-item">Registration Request</a>
+            <a href="#sales-prediction-pane" class="list-group-item">Sales Prediction</a>
+            <a href="{% url 'users' %}" class="list-group-item">Users</a>
+            
+          </div>
+        </aside>
+      </div>
+      <div class="col-md-10 scrollable-pane">
+        <main>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div id="pending-order-pane" class="content-section active">
+                  <br>
+                  <h4><b>Pending Order</b></h4>
+                </div>
+                <div id="processed-orders-pane" class="content-section">
+                  <br>
+                  <h4><b>Processed Orders</b></h4>
+                </div>
+                <div id="ship-orders-pane" class="content-section">
+                  <br>
+                  <h4><b>Ready to Ship Orders</b></h4>
+                </div>
+                <div id="shipped-orders-pane" class="content-section">
+                  <br>
+                  <h4><b>Shipped Orders</b></h4>
+                </div>
+
+                <div id="delivered-orders-pane" class="content-section">
+                  <br>
+                  <h4><b>Delivered Orders</b></h4>
+                </div>
+                <div id="cancelled-orders-pane" class="content-section">
+                  <br>
+                  <h4><b>Cancelled Orders</b></h4>
+                </div>
+                <div id="Stocks-pane" class="content-section">
+                  <br>
+                  <h4><b>Stocks</b></h4>
+                </div>
+
+                <div id="AddItems-pane" class="content-section">
+                  <br>
+                      <h4><b>Add Items</b></h4>
+                      <br>
+                </div>
+
+                
+                <div id="Items-pane" class="content-section">
+                  <br>
+                  <h4><b>Items</b></h4>
+                  <br>
+                </div>
+
+                <div id="Reg-request-pane" class="content-section">
+                  <br>
+                  <h4><b>Registration Requests</b></h4>
+                  <br>
+                </div>
+                <div id="sales-prediction-pane" class="content-section">
+                  <img class="full-page-image" src="{% static 'Images/Image17.png' %}" alt="Background Image">
+                  <br>
+                  <h4 class="custom-heading"><b>Sales Prediction</b></h4>
+                  <br>
+                  <div class="card">
+                      <div class="card-body">
+                          <form method="post" action="{% url 'sales_prediction' %}">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                  <label for="item-select">Select Item ID:</label>
+                                  <select class="form-control" id="item-select" name="item-select" required>
+                                      <option value="">-- Select Item ID --</option>
+                                      {% for item in items %}
+                                          <option value="{{ item.item_id }}">{{ item.item_id }}</option>
+                                      {% endfor %}
+                                  </select>
+                              </div>
+              
+                              <div class="form-row">
+                                  <div class="form-group col-md-6">
+                                      <label for="year-select">Select Year:</label>
+                                      <select class="form-control" id="year-select" name="year-select">
+                                          <option value="2023">2023</option>
+                                          <option value="2024">2024</option>
+                                      </select>
+                                  </div>
+                                  <div class="form-group col-md-6">
+                                      <label for="month-select">Select Month:</label>
+                                      <select class="form-control" id="month-select" name="month-select">
+                                          <option value="1">January</option>
+                                          <option value="2">February</option>
+                                          <option value="3">March</option>
+                                          <option value="4">April</option>
+                                          <option value="5">May</option>
+                                          <option value="6">June</option>
+                                          <option value="7">July</option>
+                                          <option value="8">August</option>
+                                          <option value="9">September</option>
+                                          <option value="10">October</option>
+                                          <option value="11">November</option>
+                                          <option value="12">December</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <button type="submit" class="btn btn-primary">Predict Sales</button>
+                          </form>
+                          <div id="sales-prediction" class="mt-4">
+
+                              {% if selected_item_id %}
+                                  <h5>Selected Item ID: {{ selected_item_id }}</h5>
+                              {% endif %}
+
+                              {% if selected_year and selected_month %}
+                                  <h5>Selected Year: {{ selected_year }}</h5>
+                                  <h5>Selected Month: {{ selected_month }}</h5>
+                              {% endif %}
+              
+                              {% if sales_prediction is not None %}
+                              <div style="display: inline;">
+                                <h5 style="display: inline; margin-right: 5px;">Sales Prediction:</h5>
+                                <h5 style="color: red; display: inline;">{{ sales_prediction }}</h5>
+                            </div>
+                              {% endif %}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+                <div id="user-pane" class="content-section">
+                  <br>
+                  <h4><b>Users</b></h4>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-transparent">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <p>&copy; 2025 HealthAxis. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <script>
+    document.getElementById("item-select").addEventListener("change", function () {
+        var selectedItem = this.value;
+        document.getElementById("selected-item-id").textContent = selectedItem;
+    });
+  </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var links = document.querySelectorAll(".list-group-item");
+    var contentSections = document.querySelectorAll(".content-section");
+
+    var salesPredictionIndex = Array.from(links).findIndex(link => link.getAttribute("href") === "#sales-prediction-pane");
+
+    if (salesPredictionIndex !== -1) {
+      contentSections.forEach(function (section, index) {
+        if (index === salesPredictionIndex) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+
+      links.forEach(function (link, index) {
+        if (index === salesPredictionIndex) {
+          link.classList.add("active");
+          link.classList.add("colored");
+        } else {
+          link.classList.remove("active");
+          link.classList.remove("colored");
+        }
+      });
+    }
+
+    links.forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        if (this.getAttribute("href").startsWith("#")) {
+          e.preventDefault();
+          var target = this.getAttribute("href");
+          var targetSection = document.querySelector(target);
+
+          if (targetSection) {
+            contentSections.forEach(function (section) {
+              if (section !== targetSection) {
+                section.classList.remove("active");
+              }
+            });
+
+            links.forEach(function (link) {
+              link.classList.remove("active");
+              link.classList.remove("colored");
+            });
+
+            targetSection.classList.add("active");
+            this.classList.add("active");
+
+            if (target === "#sales-prediction-pane") {
+              this.classList.add("colored");
+            }
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'League Spartan', sans-serif;
+      background-color: #f7f7f7;
+      background-image: linear-gradient(rgb(241, 241, 241), rgb(247, 246, 246));
+    }
+
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: linear-gradient(to right, #f1ca97, #f7e6d1);
+      color: #000000;
+    }
+
+    header {
+      background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #000000;
+    }
+
+    footer {
+      background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #fff;
+    }
+
+    .navbar-nav .nav-link {
+      margin-right: 20px;
+      font-weight: bold;
+      color: #080808 !important;
+    }
+
+    .navbar-nav .signup-btn {
+      background-color: #77a7ff;
+      border-radius: 50px;
+      padding: 5px 15px;
+      color: #000 !important;
+    }
+
+    .signup-btn:hover {
+      background-color: #ff8c00;
+    }
+
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffede0;
+      background-image: linear-gradient(rgba(194, 214, 212, 0.2), rgba(194, 214, 212, 0.2));
+      position: relative;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .text-box {
+      width: 100%;
+      max-width: 600px;
+      background-color: #ffffff;
+      padding: 30px;
+      box-sizing: border-box;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 1%;
+    }
+
+    .btn-primary {
+      background: #e0762f;
+      border-color: rgba(221, 117, 14, 0.493);
+    }
+
+    .form-control {
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .form-control:focus {
+      border-color: #e0762f;
+      box-shadow: 0 0 0 0.2rem rgba(224, 118, 47, 0.25);
+    }
+
+    .add-item-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .add-item-btn:hover {
+      background-color: #45a049;
+    }
+
+    .remove-item-btn {
+      background-color: #ff6347;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .remove-item-btn:hover {
+      background-color: #ff4c36;
+    }
+
+    .submit-btn {
+      background-color: #f76c6c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+      background-color: #e95e5e;
+    }
+
+    .availability-report {
+      margin-top: 30px;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .availability-report table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .availability-report th,
+    .availability-report td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .availability-report th {
+      background-color: #f1f1f1;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <title>Home</title>
+
+  <script>
+    let itemCount = 1;
+
+    function searchItems(inputId, dropdownId) {
+      const query = document.getElementById(inputId).value;
+      const dropdown = document.getElementById(dropdownId);
+
+      if (query.length >= 1) {
+        fetch(`/search-items/?q=${query}`)
+          .then(response => response.json())
+          .then(data => {
+            dropdown.innerHTML = "";
+
+            data.items.forEach(item => {
+              const option = document.createElement("option");
+              option.value = item.item_name;
+              dropdown.appendChild(option);
+            });
+          });
+      } else {
+        dropdown.innerHTML = "";
+      }
+    }
+
+    function addItemField() {
+      itemCount++;
+      let container = document.getElementById("items-container");
+      let newItemRow = `
+        <div class="item-row" id="item-row-${itemCount}">
+          <input type="text" name="item_name[]" id="item_search_${itemCount}" placeholder="Item Name" onkeyup="searchItems('item_search_${itemCount}', 'item_dropdown_${itemCount}')" list="item_dropdown_${itemCount}" class="form-control" required>
+          <datalist id="item_dropdown_${itemCount}"></datalist>
+          <input type="number" name="quantity[]" min="1" placeholder="Quantity" class="form-control" required>
+          <button type="button" class="remove-item-btn" onclick="removeItemField(${itemCount})">❌ Remove Item</button>
+        </div>
+      `;
+      container.insertAdjacentHTML("beforeend", newItemRow);
+    }
+
+    function removeItemField(itemId) {
+      const itemRow = document.getElementById(`item-row-${itemId}`);
+      itemRow.remove();
+    }
+  </script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <b><a class="nav-link" href="#" style="font-family: 'Poppins', sans-serif; color: black;">HealthAxis</a></b>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'index' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link signup-btn" href="{% url 'signup' %}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="content">
+      <!-- Section 1 with Item Availability Form -->
+      <div class="section" id="check-availability">
+        <div class="text-box">
+          <h2>Check Item Availability</h2>
+
+          <form method="post">
+            {% csrf_token %}
+            <div id="items-container">
+              <div class="item-row">
+                <input type="text" name="item_name[]" id="item_search_1" placeholder="Item Name" onkeyup="searchItems('item_search_1', 'item_dropdown_1')" list="item_dropdown_1" class="form-control" required>
+                <datalist id="item_dropdown_1"></datalist>
+                <input type="number" name="quantity[]" min="1" placeholder="Quantity" class="form-control" required>
+              </div>
+            </div>
+
+            <button type="button" class="add-item-btn" onclick="addItemField()">➕ Add Item</button>
+            <br><br>
+            <button type="submit" class="submit-btn">Check Availability</button>
+          </form>
+
+          {% if report %}
+            <div class="availability-report">
+              <h3>Availability Report</h3>
+              <table>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Requested Quantity</th>
+                  <th>Status</th>
+                </tr>
+                {% for entry in report %}
+                <tr>
+                  <td>{{ entry.item_name }}</td>
+                  <td>{{ entry.quantity }}</td>
+                  <td>{{ entry.status }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-transparent">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <br>
+            <p>&copy; 2025 HealthAxis. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

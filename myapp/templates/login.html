@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 110vh;
+      font-family: 'League Spartan', sans-serif;
+      background-color: #fcfcfc;
+      background-image: linear-gradient(rgb(238, 226, 213), rgb(238, 226, 213));
+    }
+
+    header {
+      background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #000;
+      position: relative;
+    }
+
+
+    .navbar-nav.ml-auto .nav-item {
+      margin-left: 30px;
+    }
+
+    .navbar-nav.ml-auto .nav-link {
+        font-size: 18px;
+      }
+
+  .navbar-nav .register-btn {
+      background-color: #e67d27;
+      border-radius: 50px;
+      padding: 5px 15px;
+      color: #000 !important;
+    }
+    .navbar-nav .signup-btn {
+      background-color: #5992fc;
+      border-radius: 50px;
+      padding: 5px 15px;
+      color: #e6e3e3 !important;
+    }
+
+    .signup-btn:hover {
+      background-color: #ff7b00;
+      color: #e0dcdc !important;
+    }
+
+
+    footer {
+       background: linear-gradient(to right, #ffa264, #ffa467dc);
+      box-shadow: inset 0px 0px 5px 2px rgba(221, 117, 14, 0.493);
+      color: #000; 
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    }
+
+  
+    .content-box1 {
+      margin-top: -2%;
+      padding: 20px;
+      background-color: transparent;
+      max-width: 400px;
+      height: 450px;
+      margin-left: -2%;
+      position: relative;
+    }
+
+    .login-form {
+      position: absolute;
+      top: 70%;
+      left: 85%;
+      transform: translate(-50%, -50%);
+      background-color: #f5f2ee;
+      box-shadow: inset 0px 0px 5px 2px rgba(238, 190, 141, 0.493);
+      padding: 30px;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .login-form h2 {
+      margin-bottom: 20px;
+      text-align: left;
+      color: #606563;
+    }
+
+    .login-form .form-group {
+      margin-bottom: 20px;
+    }
+
+    .login-form label {
+      font-weight: bold;
+      color: #222928;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      color:#e1eceb;
+    }
+
+    .login-form button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #e67d27; 
+      color: #ffffff;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+
+    .image-container {
+  width: 80%;
+  height: auto;
+  margin-top: 7rem;
+  margin-left: -9%;
+    }
+
+ 
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <title>Login Page</title>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <b><a class="nav-link" href="#" style="font-family: 'Poppins', sans-serif; color: black;">HealthAxis</a></b>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link underline" href="{% url 'index' %}"><b>Home</b></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link signup-btn" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <main>
+          <div class="content-box1">
+            <form class="login-form" method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
+              <h2>Login</h2>
+          
+              {% if messages %}
+              <div class="alert alert-danger">
+                  <ul>
+                      {% for message in messages %}
+                      <li>{{ message }}</li>
+                      {% endfor %}
+                  </ul>
+              </div>
+              {% endif %}
+          
+              {% if request.method == 'POST' and not user and not messages %}
+              <div class="alert alert-danger">
+                  Invalid username or password
+              </div>
+              {% endif %}
+          
+              <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+              </div>
+              <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+              </div>
+              <button type="submit" class="btn btn-primary">Log in</button>
+          </form>
+          </div>
+        </main>
+      </div>
+      <div class="col-md-6">
+        <main>
+          <img src="{% static 'Images/Image10.png' %}" alt="Image" class="image-container">
+        </main>
+      </div>
+    </div>
+  </div>
+  
+
+  <footer class="bg-transparent">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <p>&copy; 2025 HealthAxis. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

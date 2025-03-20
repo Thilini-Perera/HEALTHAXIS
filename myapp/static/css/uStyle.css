@@ -1,0 +1,83 @@
+body {
+    font-family: 'League Spartan', sans-serif;
+    background-color:#50555a;
+    background-image: linear-gradient(rgba(191, 205, 203, 0.2), rgba(194, 214, 212, 0.2));
+  }
+
+  .sidebar {
+    width: 14.5%;
+    background-color: #50555a;
+    min-height: 100vh;  
+  }
+
+  .sidebar .list-group-item {
+    border: none;
+    border-radius: 0;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+   color: #fff;
+   position: relative;
+   padding-right: 30px;
+   transition: background-color 0.3s, color 0.3s;
+   text-decoration: none; 
+   font-size: 16px;
+   background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .sidebar .list-group-item::after {
+    content: "\f105";
+    font-family: "Font Awesome 5 Free";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-weight: 900;
+  }
+
+  .sidebar .list-group-item:hover,
+  .sidebar .list-group-item.active {
+    background-color: #e67d27;
+    color: #fff;
+    text-decoration: none; 
+  }
+
+  .sidebar .list-group-item:hover::after,
+  .sidebar .list-group-item.active::after {
+    color: #fff;
+  }
+
+  footer {
+    background: linear-gradient(to right, #fd781f, #ff8a3bdc);
+    box-shadow: inset 0px 0px 5px 2px rgba(133, 109, 97, 0.493);
+    color: #000;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-info {
+    display: flex;
+    align-items: center;
+    }
+    
+    .profile-text {
+    margin-left: 18px; 
+    } 
+      
+  .profile-card {
+    width: 100%;
+    margin: 20px -30px 20px 0;
+    font-size: 20px; 
+    background-image: linear-gradient(rgb(250, 117, 28), rgb(177, 166, 156))
+  }
+
+  .card-title {
+    font-size: 13px;
+  } 
+  .pharmacy-name {
+    font-size: 13px; 
+    color: #333; 
+    margin-top: 5px;
+  }
+  .profile-image {
+    height: 40px; 
+    }
