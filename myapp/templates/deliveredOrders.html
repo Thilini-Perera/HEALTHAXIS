@@ -301,10 +301,8 @@
       var links = document.querySelectorAll(".list-group-item");
       var contentSections = document.querySelectorAll(".content-section");
   
-      // Find the index of the "Sales Prediction" link
       var DOIndex = Array.from(links).findIndex(link => link.getAttribute("href") === "#delivered-orders-pane");
   
-      // Show the "Sales Prediction" content section and hide others
       if (DOIndex !== -1) {
         contentSections.forEach(function (section, index) {
           if (index === DOIndex) {
@@ -327,7 +325,7 @@
   
       links.forEach(function (link) {
         link.addEventListener("click", function (e) {
-          // Check if the link has a valid href
+          
           if (this.getAttribute("href").startsWith("#")) {
             e.preventDefault();
             var target = this.getAttribute("href");
@@ -335,7 +333,7 @@
   
             if (targetSection) {
               contentSections.forEach(function (section) {
-                // Hide all content sections except the one clicked
+           
                 if (section !== targetSection) {
                   section.classList.remove("active");
                 }
@@ -349,7 +347,7 @@
               targetSection.classList.add("active");
               this.classList.add("active");
   
-              // Add class "colored" to the clicked link
+           
               if (target === "#delivered-orders-pane") {
                 this.classList.add("colored");
               }
@@ -361,7 +359,7 @@
   </script>
   
   <script>
-  // Add event listener to each "View Details" button
+
   const viewButtons = document.querySelectorAll('.view-details-btn');
   viewButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -372,7 +370,7 @@
       });
   });
 
-  // Add event listener to each "Cancel Order" button
+
   const shipButtons = document.querySelectorAll('.delivered-order-btn');
   shipButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -392,12 +390,11 @@
       .then(response => response.json())
       .then(data => {
           if (data.success) {
-              // Order cancelled successfully, update UI if needed
-              // You can reload the page or update the order status directly in the DOM
+              
               alert('Order is delivered successfully.');
               location.reload();
           } else {
-              // Show an error message if order cancellation failed
+             
               alert('Failed to ship order: ' + data.message);
           }
       })
@@ -411,7 +408,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     const generateSalesReportBtn = document.getElementById('generate-sales-report-btn');
     generateSalesReportBtn.addEventListener('click', () => {
-      // Call the Django view to generate the PDF
+      
       window.location.href = '{% url "generate_monthly_sales_report" %}';
     });   
   });

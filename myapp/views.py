@@ -717,7 +717,6 @@ def check_availability(request):
         report = []
         for item_name, quantity in zip(item_names, quantities):
             try:
-                # Correct field name used here
                 item = Item.objects.get(item_name=item_name)  
                 
                 # Check stock availability
@@ -728,7 +727,6 @@ def check_availability(request):
             except Item.DoesNotExist:
                 status = 'Item not found'
 
-            # Add the result to the report
             report.append({
                 'item_name': item_name,
                 'quantity': quantity,

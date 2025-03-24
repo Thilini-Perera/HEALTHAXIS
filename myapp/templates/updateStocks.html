@@ -326,10 +326,10 @@
       var links = document.querySelectorAll(".list-group-item");
       var contentSections = document.querySelectorAll(".content-section");
   
-      // Find the index of the "Sales Prediction" link
+
       var stocksIndex = Array.from(links).findIndex(link => link.getAttribute("href") === "#Stocks-pane");
   
-      // Show the "Sales Prediction" content section and hide others
+
       if (stocksIndex !== -1) {
         contentSections.forEach(function (section, index) {
           if (index === stocksIndex) {
@@ -352,7 +352,7 @@
   
       links.forEach(function (link) {
         link.addEventListener("click", function (e) {
-          // Check if the link has a valid href
+  
           if (this.getAttribute("href").startsWith("#")) {
             e.preventDefault();
             var target = this.getAttribute("href");
@@ -360,7 +360,7 @@
   
             if (targetSection) {
               contentSections.forEach(function (section) {
-                // Hide all content sections except the one clicked
+        
                 if (section !== targetSection) {
                   section.classList.remove("active");
                 }
@@ -374,7 +374,6 @@
               targetSection.classList.add("active");
               this.classList.add("active");
   
-              // Add class "colored" to the clicked link
               if (target === "#Stocks-pane") {
                 this.classList.add("colored");
               }
@@ -409,7 +408,7 @@
   document.getElementById("update-stocks-form").addEventListener("submit", function(event) {
       event.preventDefault();
       
-      // Make an AJAX request to update stocks
+  
       fetch(this.action, {
           method: this.method,
           body: new URLSearchParams(new FormData(this)),
@@ -420,11 +419,11 @@
       .then(response => response.json())
       .then(data => {
           if (data.success) {
-              // Stocks updated successfully
+
               alert(`Stocks for ${data.item_name} have been updated successfully.`);
               location.reload();
           } else {
-              // Show an error message if stocks update failed
+
               alert('Failed to update stocks: ' + data.message);
           }
       })
@@ -439,10 +438,10 @@
   $(document).ready(function () {
       $('#item-select').select2({
           placeholder: 'Search for an item',
-          allowClear: true, // This allows clearing the selection
+          allowClear: true, 
       });
       
-      // Call the updateStockInfo function when the selection changes
+
       $('#item-select').on('change', function () {
           updateStockInfo();
       });
