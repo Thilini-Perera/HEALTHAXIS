@@ -23,6 +23,9 @@ from datetime import datetime
 from myapp.models import OrderItem 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.db.models import Q
+from .models import Order
 
 def index(request):
     return render(request, 'index.html')
@@ -338,19 +341,12 @@ def delivered_orders(request):
  else:
     return redirect('login')
 
-# def cd_orders(request):
-#  if 'username' in request.session:
-#     return render(request, 'cancelledOrders.html')
-#  else:
-#     return redirect('login')
-
 def cd_orders(request):
     if 'username' in request.session:
         cancelled_orders = Order.objects.filter(status='cancelled')
         return render(request, 'cancelledOrders.html', {'cancelled_orders': cancelled_orders})
     else:
         return redirect('login')
-
 
 class UpdateStocksForm(forms.Form):
     item = forms.CharField(widget=forms.HiddenInput())
